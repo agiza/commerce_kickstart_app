@@ -1,9 +1,12 @@
 name = Commerce Kickstart App
-description = Commerce Kickstart mobile app related configuration.
+description = Commerce Kickstart mobile app configuration.
 core = 7.x
 package = Commerce Kickstart
-version = 7.x-2.5
+php = 5.2.4
+version = 7.x-2.6
 project = commerce_kickstart_app
+dependencies[] = commerce_services
+dependencies[] = commerce_system_services
 dependencies[] = flag
 dependencies[] = flag_service
 dependencies[] = rest_server

@@ -13,7 +13,7 @@ function commerce_kickstart_app_views_default_views() {
   $view = new view();
   $view->name = 'kickstart_app_catalog_tree';
   $view->description = 'Catalog listing';
-  $view->tag = 'taxonomy,mobile';
+  $view->tag = 'kickstart app, mobile, catalog';
   $view->base_table = 'taxonomy_term_data';
   $view->human_name = 'Kickstart App Catalog Tree';
   $view->core = 7;
@@ -132,12 +132,38 @@ function commerce_kickstart_app_views_default_views() {
   $handler->display->display_options['filters']['machine_name']['value'] = array(
     'category' => 'category',
   );
+  $translatables['kickstart_app_catalog_tree'] = array(
+    t('Master'),
+    t('Catalog Tree'),
+    t('more'),
+    t('Apply'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('Items per page'),
+    t('- All -'),
+    t('Offset'),
+    t('« first'),
+    t('‹ previous'),
+    t('next ›'),
+    t('last »'),
+    t('Parent'),
+    t('term_name'),
+    t('tid'),
+    t('.'),
+    t(','),
+    t('vid'),
+    t('description'),
+    t('Weight'),
+    t('parent_tid'),
+  );
   $export['kickstart_app_catalog_tree'] = $view;
 
   $view = new view();
   $view->name = 'kickstart_app_product_search';
   $view->description = 'Display all the products that are available, using Search API';
-  $view->tag = 'default';
+  $view->tag = 'kickstart app, mobile, search';
   $view->base_table = 'search_api_index_product_display';
   $view->human_name = 'Kickstart App Product Search';
   $view->core = 7;
@@ -226,7 +252,7 @@ function commerce_kickstart_app_views_default_views() {
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'search_api_index_product_display';
   $handler->display->display_options['fields']['title']['field'] = 'title';
-  $handler->display->display_options['fields']['title']['label'] = 'title';
+  $handler->display->display_options['fields']['title']['label'] = 'node_title';
   $handler->display->display_options['fields']['title']['link_to_entity'] = 0;
   /* Field: Indexed Node: Node ID */
   $handler->display->display_options['fields']['nid']['id'] = 'nid';
@@ -249,6 +275,23 @@ function commerce_kickstart_app_views_default_views() {
     'image_link' => '',
   );
   $handler->display->display_options['fields']['field_images']['delta_offset'] = '0';
+  /* Field: Commerce Product: Price */
+  $handler->display->display_options['fields']['commerce_price']['id'] = 'commerce_price';
+  $handler->display->display_options['fields']['commerce_price']['table'] = 'entity_commerce_product';
+  $handler->display->display_options['fields']['commerce_price']['field'] = 'commerce_price';
+  $handler->display->display_options['fields']['commerce_price']['relationship'] = 'field_product';
+  $handler->display->display_options['fields']['commerce_price']['label'] = 'price';
+  $handler->display->display_options['fields']['commerce_price']['click_sort_column'] = 'amount';
+  $handler->display->display_options['fields']['commerce_price']['type'] = 'commerce_price_formatted_amount';
+  $handler->display->display_options['fields']['commerce_price']['settings'] = array(
+    'calculation' => 'calculated_sell_price',
+  );
+  /* Field: Indexed Node: The main body text */
+  $handler->display->display_options['fields']['body']['id'] = 'body';
+  $handler->display->display_options['fields']['body']['table'] = 'search_api_index_product_display';
+  $handler->display->display_options['fields']['body']['field'] = 'body';
+  $handler->display->display_options['fields']['body']['label'] = 'description';
+  $handler->display->display_options['fields']['body']['type'] = 'text_plain';
   /* Filter criterion: Search: Fulltext search */
   $handler->display->display_options['filters']['search_api_views_fulltext']['id'] = 'search_api_views_fulltext';
   $handler->display->display_options['filters']['search_api_views_fulltext']['table'] = 'search_api_index_product_display';
@@ -258,23 +301,39 @@ function commerce_kickstart_app_views_default_views() {
   $handler->display->display_options['filters']['search_api_views_fulltext']['expose']['label'] = 'Search';
   $handler->display->display_options['filters']['search_api_views_fulltext']['expose']['operator'] = 'search_api_views_fulltext_op';
   $handler->display->display_options['filters']['search_api_views_fulltext']['expose']['identifier'] = 'search_keys';
+  $handler->display->display_options['filters']['search_api_views_fulltext']['expose']['required'] = TRUE;
   $handler->display->display_options['filters']['search_api_views_fulltext']['expose']['remember_roles'] = array(
     2 => '2',
     1 => 0,
     3 => 0,
   );
-
-  /* Display: Page */
-  $handler = $view->new_display('page', 'Page', 'page');
-  $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
-  $handler->display->display_options['exposed_block'] = TRUE;
-  $handler->display->display_options['path'] = 'products-search-app';
-  $handler->display->display_options['menu']['type'] = 'normal';
-  $handler->display->display_options['menu']['title'] = 'Mobile app search';
-  $handler->display->display_options['menu']['weight'] = '50';
-  $handler->display->display_options['menu']['name'] = 'main-menu';
-  $handler->display->display_options['menu']['context'] = 0;
-  $handler->display->display_options['tab_options']['weight'] = '0';
+  $translatables['kickstart_app_product_search'] = array(
+    t('Master'),
+    t('more'),
+    t('Apply'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('Items per page'),
+    t('- All -'),
+    t('Offset'),
+    t('« first'),
+    t('‹ previous'),
+    t('next ›'),
+    t('last »'),
+    t('No results found for your search.
+  Check your spelling or try another term.'),
+    t('Image » The image file.'),
+    t('Product variations'),
+    t('node_title'),
+    t('nid'),
+    t('.'),
+    t('image'),
+    t('price'),
+    t('description'),
+    t('Search'),
+  );
   $export['kickstart_app_product_search'] = $view;
 
   $view = new view();
@@ -397,12 +456,36 @@ function commerce_kickstart_app_views_default_views() {
     'cart' => 'cart',
     'checkout' => 'checkout',
   );
+  $translatables['kickstart_app_user_orders'] = array(
+    t('Defaults'),
+    t('Order history'),
+    t('more'),
+    t('Apply'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('Items per page'),
+    t('- All -'),
+    t('Offset'),
+    t('« first'),
+    t('‹ previous'),
+    t('next ›'),
+    t('last »'),
+    t('You have not placed any orders with us yet.'),
+    t('order_number'),
+    t('date_created'),
+    t('date_updated'),
+    t('order_total'),
+    t('order_status'),
+    t('All'),
+  );
   $export['kickstart_app_user_orders'] = $view;
 
   $view = new view();
   $view->name = 'kickstart_app_user_wishlist';
-  $view->description = '';
-  $view->tag = 'default';
+  $view->description = 'User wishlist products.';
+  $view->tag = 'kickstart app, mobile, wishlist, flag';
   $view->base_table = 'node';
   $view->human_name = 'Kickstart App User Wishlist';
   $view->core = 7;
@@ -510,6 +593,29 @@ function commerce_kickstart_app_views_default_views() {
   $handler->display->display_options['filters']['flagged']['field'] = 'flagged';
   $handler->display->display_options['filters']['flagged']['relationship'] = 'flag_content_rel';
   $handler->display->display_options['filters']['flagged']['value'] = '1';
+  $translatables['kickstart_app_user_wishlist'] = array(
+    t('Master'),
+    t('more'),
+    t('Apply'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('Items per page'),
+    t('- All -'),
+    t('Offset'),
+    t('« first'),
+    t('‹ previous'),
+    t('next ›'),
+    t('last »'),
+    t('wishlist'),
+    t('Product'),
+    t('Nid'),
+    t('Image'),
+    t('[field_images]'),
+    t('Price'),
+    t('description'),
+  );
   $export['kickstart_app_user_wishlist'] = $view;
 
   return $export;
